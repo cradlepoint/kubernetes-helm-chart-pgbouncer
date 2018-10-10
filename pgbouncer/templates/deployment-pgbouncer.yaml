@@ -1,0 +1,105 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  annotations:
+    checksum/ini: {{ include (print $.Template.BasePath "/_pgbouncer.ini.tpl") . | sha256sum }}
+    checksum/users: {{ include (print $.Template.BasePath "/_userlist.txt.tpl") . | sha256sum }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      affinity:
+        {{- if eq .Values.antiAffinity "hard" }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: {{ template "fullname" . }}
+                  release: {{ .Release.Name }}
+        {{- else if eq .Values.antiAffinity "soft" }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app: {{ template "fullname" . }}
+                    release: {{ .Release.Name }}
+        {{- end }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecretName }}
+      volumes:
+        - name: secret
+          secret:
+            secretName: {{ template "fullname" . }}-secret
+      containers:
+        - name: pgbouncer
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: pgbouncer
+              containerPort: {{ .Values.internalPort }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.internalPort }}
+          lifecycle:
+            preStop:
+              exec:
+                # https://freecontent.manning.com/handling-client-requests-properly-with-kubernetes/
+                command: ["/bin/sh","-c","sleep 5"]
+          volumeMounts:
+            - name: secret
+              subPath: userlist.txt
+              mountPath: /etc/pgbouncer/userlist.txt
+              readOnly: true
+            - name: secret
+              subPath: pgbouncer.ini
+              mountPath: /etc/pgbouncer/pgbouncer.ini
+              readOnly: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          # env below is not actually used by anything in the container, however
+          # changes to the values will trigger a new pod to be created on upgrade.
+          env:
+            - name: MAX_CLIENT_CONN
+              value: "{{ .Values.connectionLimits.maxClientConn }}"
+            - name: DEFAULT_POOL_SIZE
+              value: "{{ .Values.connectionLimits.defaultPoolSize }}"
+            - name: MIN_POOL_SIZE
+              value: "{{ .Values.connectionLimits.minPoolSize }}"
+            - name: RESERVE_POOL_SIZE
+              value: "{{ .Values.connectionLimits.reservePoolSize }}"
+            - name: RESERVE_POOL_TIMEOUT
+              value: "{{ .Values.connectionLimits.reservePoolTimeout }}"
+            - name: LOG_CONNECTIONS
+              value: "{{ .Values.logConnections }}"
+            - name: LOG_DISCONNECTIONS
+              value: "{{ .Values.logDisconnections }}"
+            - name: LOG_POOLER_ERRORS
+              value: "{{ .Values.logPoolerErrors }}"
+            - name: VERBOSE
+              value: "{{ .Values.verbose }}"
+            - name: USERS
+              value: "{{ range .Values.users }} {{ . }} {{ end }}"
+            - name: CUSTOM_SETTINGS
+              value: "{{ range .Values.customSettings }} {{ . }} {{ end }}"
+          {{- range $k, $v := .Values.databases }}
+            - name: "DATABASE_{{ $v.dbname }}"
+              value: "{{ $v.port }} {{ $v.user }} {{ $v.host }}"
+          {{- end }}
