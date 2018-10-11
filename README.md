@@ -1,6 +1,6 @@
 # kubernetes-helm-chart-pgbouncer
 
-This project is a [Helm](https://helm.sh/) chart implmentation for [PgBouncer](https://pgbouncer.github.io).
+This project is a [Helm](https://helm.sh/) chart implementation for [PgBouncer](https://pgbouncer.github.io).
 
 ---
 
