@@ -72,7 +72,7 @@ spec:
               mountPath: /etc/pgbouncer/pgbouncer.ini
               readOnly: true
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.resources | indent 12 }}
 
           # env below is not actually used by anything in the container, however
           # changes to the values will trigger a new pod to be created on upgrade.
@@ -100,6 +100,6 @@ spec:
             - name: CUSTOM_SETTINGS
               value: "{{ range .Values.customSettings }} {{ . }} {{ end }}"
           {{- range $k, $v := .Values.databases }}
-            - name: "DATABASE_{{ $v.dbname }}"
+            - name: DATABASE_{{ $v.dbname }}
               value: "{{ $v.port }} {{ $v.user }} {{ $v.host }}"
           {{- end }}
