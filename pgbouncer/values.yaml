@@ -31,7 +31,7 @@ connectionLimits:
 logConnections: 1
 logDisconnections: 1
 logPoolerErrors: 1
-verbose: 2
+verbose: 0
 
 # add key: value map entries to customSettings to be added to pbgouncer.ini [pgbouncer] section
 customSettings: {}
