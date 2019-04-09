@@ -72,7 +72,7 @@ spec:
               mountPath: /etc/pgbouncer/pgbouncer.ini
               readOnly: true
           resources:
-            {{- toYaml .Values.resources | indent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
 
           # env below is not actually used by anything in the container, however
           # changes to the values will trigger a new pod to be created on upgrade.
