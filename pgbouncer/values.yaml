@@ -28,6 +28,9 @@ connectionLimits:
   reservePoolSize: 25
   reservePoolTimeout: 5
 
+labels: {}
+# Add custom deployment labels here
+
 logConnections: 1
 logDisconnections: 1
 logPoolerErrors: 1
