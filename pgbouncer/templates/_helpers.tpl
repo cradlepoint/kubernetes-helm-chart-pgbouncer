@@ -15,3 +15,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/*
+The app label for the pgbouncer Deployment.  This is used as a selector for Pods in its Deployment.
+*/}}
+{{- define "pgbouncer.app-label" -}}
+app: {{ template "pgbouncer.fullname" . -}}
+{{- end -}}

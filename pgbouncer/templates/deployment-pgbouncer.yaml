@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "pgbouncer.fullname" . }}
   labels:
-    app: {{ template "pgbouncer.fullname" . }}
+    {{ template "pgbouncer.app-label" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
@@ -29,7 +29,7 @@ spec:
             - topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  app: {{ template "pgbouncer.fullname" . }}
+                  {{ template "pgbouncer.app-label" . }}
                   release: {{ .Release.Name }}
         {{- else if eq .Values.antiAffinity "soft" }}
         podAntiAffinity:
@@ -39,7 +39,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 labelSelector:
                   matchLabels:
-                    app: {{ template "pgbouncer.fullname" . }}
+                    {{ template "pgbouncer.app-label" . }}
                     release: {{ .Release.Name }}
         {{- end }}
       imagePullSecrets:
