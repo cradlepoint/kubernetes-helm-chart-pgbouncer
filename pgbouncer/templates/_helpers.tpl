@@ -18,6 +18,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{/*
 The app label for the pgbouncer Deployment.  This is used as a selector for Pods in its Deployment.
 */}}
-{{- define "pgbouncer.app-label" -}}
+{{- define "pgbouncer.appLabel" -}}
 app: {{ template "pgbouncer.fullname" . -}}
 {{- end -}}
