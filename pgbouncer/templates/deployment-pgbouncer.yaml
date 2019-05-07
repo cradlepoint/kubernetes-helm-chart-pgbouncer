@@ -1,9 +1,9 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "pgbouncer.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
+    {{ template "pgbouncer.appLabel" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ template "pgbouncer.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       affinity:
@@ -29,7 +29,7 @@ spec:
             - topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  app: {{ template "fullname" . }}
+                  {{ template "pgbouncer.appLabel" . }}
                   release: {{ .Release.Name }}
         {{- else if eq .Values.antiAffinity "soft" }}
         podAntiAffinity:
@@ -39,7 +39,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 labelSelector:
                   matchLabels:
-                    app: {{ template "fullname" . }}
+                    {{ template "pgbouncer.appLabel" . }}
                     release: {{ .Release.Name }}
         {{- end }}
       imagePullSecrets:
@@ -47,7 +47,7 @@ spec:
       volumes:
         - name: secret
           secret:
-            secretName: {{ template "fullname" . }}-secret
+            secretName: {{ template "pgbouncer.fullname" . }}-secret
       containers:
         - name: pgbouncer
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

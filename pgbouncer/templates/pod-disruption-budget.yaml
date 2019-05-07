@@ -2,16 +2,16 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: "{{ template "fullname" . }}"
+  name: "{{ template "pgbouncer.fullname" . }}"
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "pgbouncer.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "fullname" . }}
+      app: {{ template "pgbouncer.fullname" . }}
       release: {{ .Release.Name }}
   minAvailable: {{ .Values.budget.minAvailable }}
 {{- end -}}
