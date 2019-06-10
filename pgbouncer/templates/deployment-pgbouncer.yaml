@@ -44,7 +44,7 @@ spec:
                     {{ template "pgbouncer.appLabel" . }}
                     release: {{ .Release.Name }}
         {{- end }}
-      {{- .Values.imagePullSecretName }}
+      {{- if .Values.imagePullSecretName }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecretName }}
       {{- end }}
