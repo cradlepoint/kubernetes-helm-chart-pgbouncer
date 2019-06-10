@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "pgbouncer.fullname" . }}
@@ -44,8 +44,10 @@ spec:
                     {{ template "pgbouncer.appLabel" . }}
                     release: {{ .Release.Name }}
         {{- end }}
+      {{- .Values.imagePullSecretName }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecretName }}
+      {{- end }}
       volumes:
         - name: secret
           secret:
