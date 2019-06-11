@@ -18,6 +18,10 @@ spec:
     rollingUpdate:
       maxUnavailable: 0
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "pgbouncer.fullname" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
