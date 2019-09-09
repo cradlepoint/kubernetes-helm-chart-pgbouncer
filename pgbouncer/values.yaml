@@ -31,8 +31,8 @@ connectionLimits:
 labels: {}
 # Add custom deployment labels here
 
-logConnections: 1
-logDisconnections: 1
+logConnections: 0
+logDisconnections: 0
 logPoolerErrors: 1
 verbose: 0
 
