@@ -38,3 +38,7 @@ verbose: 0
 
 # add key: value map entries to customSettings to be added to pbgouncer.ini [pgbouncer] section
 customSettings: {}
+
+global:
+  # optionally use namespace as dbname
+  namespacedDatabases: false
