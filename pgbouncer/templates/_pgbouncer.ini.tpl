@@ -79,10 +79,14 @@ reserve_pool_timeout = {{ .Values.connectionLimits.reservePoolTimeout }}
 ;syslog = 0
 ;syslog_facility = daemon
 ;syslog_ident = pgbouncer
+
+;;; Logging
+
 log_connections = {{ .Values.logConnections }}
 log_disconnections = {{ .Values.logDisconnections }}
 log_pooler_errors = {{ .Values.logPoolerErrors }}
-;stats_period = 60
+log_stats = {{ .Values.logStats }}
+stats_period = {{ .Values.statsPeriod }}
 verbose = {{ .Values.verbose }}
 
 ;;; Timeouts
