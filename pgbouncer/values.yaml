@@ -33,7 +33,7 @@ labels: {}
 
 logConnections: 0
 logDisconnections: 0
-logStats: 1
+logStats: 0
 logPoolerErrors: 1
 verbose: 0
 statsPeriod: 60
