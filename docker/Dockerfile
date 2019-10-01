@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN set -x \
     && apt-get -qq update \
-    && apt-get install -yq --no-install-recommends pgbouncer \
+    && apt-get install -yq --no-install-recommends pgbouncer=1.8.1-1build1 \
     && apt-get purge -y --auto-remove \
     && rm -rf /var/lib/apt/lists/*
 
