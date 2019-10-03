@@ -7,9 +7,9 @@
 {{- range $k, $v := .Values.databases }}
 
 {{- if $root.Values.global.namespacedDatabases }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} user={{ $v.user }} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ $v.dbname }}
 {{- else }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} user={{ $v.user }} dbname={{ $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $v.dbname }}
 {{- end }}
 
 {{- end }}
