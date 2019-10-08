@@ -52,7 +52,7 @@ auth_file = /etc/pgbouncer/userlist.txt
 ;auth_query = SELECT usename, passwd FROM pg_shadow WHERE usename=$1
 
 ;;; Users allowed into database 'pgbouncer'
-{{- $users := (join ", " (keys .Values.users)) }}
+{{- $users := (join ", " (keys .Values.users | sortAlpha)) }}
 admin_users = {{ $users }}
 stats_users = {{ $users }}, stats, root, monitor
 
