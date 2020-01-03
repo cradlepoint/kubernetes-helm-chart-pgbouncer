@@ -24,6 +24,9 @@ spec:
       labels:
         app: {{ template "pgbouncer.fullname" . }}
         release: {{ .Release.Name }}
+        {{- if .Values.spec.labels }}
+        {{- toYaml .Values.spec.labels | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/ini: {{ include "pgbouncer.ini.1.0.0" . | sha256sum }}
         checksum/users: {{ include "userlist.txt.1.0.0" . | sha256sum }}
