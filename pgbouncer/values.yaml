@@ -28,6 +28,9 @@ connectionLimits:
   reservePoolSize: 25
   reservePoolTimeout: 5
 
+spec:
+    labels: {} # Add custom pod labels here
+
 labels: {}
 # Add custom deployment labels here
 
