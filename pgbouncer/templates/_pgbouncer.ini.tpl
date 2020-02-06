@@ -8,9 +8,9 @@
 
 {{- $requiredMsg := printf ".Values.databases.%v needs to include .dbname" $k }}
 {{- if $root.Values.global.namespacedDatabases }}
-{{ required $requiredMsg $v.dbname }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $v.dbname }}
 {{- else }}
-{{ required $requiredMsg $v.dbname }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ required $requiredMsg $v.dbname }}
 {{- end }}
 
 {{- end }}
