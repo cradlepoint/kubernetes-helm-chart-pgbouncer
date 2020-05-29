@@ -31,6 +31,10 @@ connectionLimits:
 spec:
     labels: {} # Add custom pod labels here    
     annotations: {} # Add custom pod annotations here
+      # Annotations are converted to a JSON string and run through
+      # the helm `tpl` function. Then converted back to a map and
+      # rendered as YAML. This allows usage of go template directives
+      # in your annotations.
 
 labels: {}
 # Add custom deployment labels here
