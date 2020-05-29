@@ -31,7 +31,8 @@ spec:
         checksum/ini: {{ include "pgbouncer.ini.1.0.0" . | sha256sum }}
         checksum/users: {{ include "userlist.txt.1.0.0" . | sha256sum }}
         {{- if .Values.spec.annotations }}
-        {{- toYaml .Values.spec.annotations | nindent 8 }}
+        {{- /* Using toJson instead of toYaml due to https://github.com/helm/helm/issues/3470  */ -}}
+        {{- tpl (toJson .Values.spec.annotations) . | fromJson | toYaml |  nindent 8 }}
         {{- end }}
     spec:
       affinity:
