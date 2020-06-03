@@ -2,9 +2,11 @@
 replicaCount: 1
 internalPort: 5432
 antiAffinity: soft
+nodeAffinity: {} # optionally define nodeAffinity
+tolerations: [] # optionally define tolerations
 
 budget:
-  minAvailable: 0
+  minAvailable: 0 # PodDisruptionBudget spec.minAvailable
 
 image:
   repository: cradlepoint/pgbouncer
