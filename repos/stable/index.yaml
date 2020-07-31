@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  pgbouncer:
+  - apiVersion: v1
+    created: "2020-07-31T16:59:20.23681034Z"
+    description:
+    digest: d2300e221ef85469ec1fd962e82c7fad48c05c28c52c9c3d91a66d3a34e3b447
+    name: pgbouncer
+    urls:
+    - https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/1.0.6/pgbouncer-1.0.6.tgz
+    version: 1.0.6
+
+generated: "2020-07-31T09:58:17.91897671-06:00"

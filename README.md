@@ -31,3 +31,12 @@ connectionLimits:
 ```bash
 helm install -f values.override.yaml pgbouncer
 ```
+
+or in your chart's requirements.yaml
+
+```
+dependencies:
+- name: pgbouncer
+  version: 1.0.6
+  repository: https://raw.githubusercontent.com/cradlepoint/kubernetes-helm-chart-pgbouncer/master/repos/stable
+```
