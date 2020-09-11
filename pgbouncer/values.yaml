@@ -13,6 +13,11 @@ image:
   tag: latest
   pullPolicy: Always
 
+service:
+  enabled: false
+  type: ClusterIP
+  name: pgbouncer
+
 databases: {}
 #  name:
 #    host: host
