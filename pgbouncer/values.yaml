@@ -17,6 +17,7 @@ service:
   enabled: false
   type: ClusterIP
   name: pgbouncer
+  annotations: {}
 
 databases: {}
 #  name:

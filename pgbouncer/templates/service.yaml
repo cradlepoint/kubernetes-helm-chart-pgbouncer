@@ -8,13 +8,17 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.service.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   selector:
     {{ template "pgbouncer.appLabel" . }}
   ports:
     - port: 5432
-      targetPort: 5432
+      targetPort: {{ .Values.internalPort }}
       protocol: TCP
       name: postgres
 {{- end }}
