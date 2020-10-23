@@ -1,3 +1,6 @@
+# maintainers:  to run this "package" action:
+# git tag v1.0.X && git push origin --tags
+
 name: package
 
 on:
