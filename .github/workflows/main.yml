@@ -1,0 +1,84 @@
+name: package
+
+on:
+  push:
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0.0, v20.15.10
+jobs:
+  build:
+    name: package helm chart release
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: package chart
+        run: |
+          # install yq 
+          pip install yq
+          export PATH="$PATH:/home/runner/.local/bin"
+          echo "::set-env name=PATH::$PATH"
+        
+          # install jq
+          wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64          
+          sudo mv jq-linux64 /usr/local/bin/jq
+          sudo chmod +x /usr/local/bin/jq
+          
+          # install helm
+          HELM_VERSION=v2.16.9
+          wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
+          tar -xvf helm-${HELM_VERSION}-linux-amd64.tar.gz
+          sudo mv linux-amd64/helm /usr/local/bin/helm-${HELM_VERSION}
+          rm -f /helm-${HELM_VERSION}-linux-amd64.tar.gz
+        
+          # update chart version in Chart.yaml
+          CHART_VERSION="${{ github.ref }}"
+          CHART_VERSION=$(echo "${CHART_VERSION##*v}")
+          echo "::set-env name=CHART_VERSION::$CHART_VERSION"
+          pushd pgbouncer
+          cat Chart.yaml | yq -y --arg VERSION "$CHART_VERSION" '.version = $VERSION' > Chart.yaml.tmp
+          mv Chart.yaml.tmp Chart.yaml
+          popd
+                  
+          # package the chart
+          helm package pgbouncer
+
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: upload release assets
+        id: upload-release-assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./pgbouncer-${{ env.CHART_VERSION }}.tgz
+          asset_name: pgbouncer-${{ env.CHART_VERSION }}.tgz
+          asset_content_type: application/gzip
+
+      - name: update helm index
+        id: helm_index
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # update the index.yaml file
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          SHA=$(sha256sum pgbouncer-${{ env.CHART_VERSION }}.tgz | head -n1 | cut -d " " -f1)
+          pushd repos/stable
+          cat index.yaml | yq -y --arg now "$NOW" --arg digest "$SHA" '.entries.pgbouncer += [{"apiVersion":"v1", "created": $now, "description":"pgbouncer", "digest":$digest, "urls":["https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/${{ env.CHART_VERSION }}/pgbouncer-${{ env.CHART_VERSION }}.tgz"], "version": "${{ env.CHART_VERSION }}"}]' > index.yaml.tmp
+          mv index.yaml.tmp index.yaml
+          popd
+
+          # push index.yaml and Chart.yaml for this release; these commits will trail the "tag".
+          git config --global user.name 'github actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "update helm index for release ${{ env.CHART_VERSION }}"
+          git push origin HEAD:master
