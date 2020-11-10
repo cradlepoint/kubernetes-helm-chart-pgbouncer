@@ -37,6 +37,6 @@ or in your chart's requirements.yaml
 ```
 dependencies:
 - name: pgbouncer
-  version: 1.0.6
+  version: 1.0.7
   repository: https://raw.githubusercontent.com/cradlepoint/kubernetes-helm-chart-pgbouncer/master/repos/stable
 ```
