@@ -5,6 +5,9 @@ antiAffinity: soft
 nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
 
+# Pool mode, needs to be one of session, transaction, statement
+poolMode: session
+
 budget:
   minAvailable: 0 # PodDisruptionBudget spec.minAvailable
 
