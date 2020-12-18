@@ -14,34 +14,35 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: package chart
+      - name: install dependencies
         run: |
           # install yq 
           pip install yq
-          export PATH="$PATH:/home/runner/.local/bin"
-          echo "::set-env name=PATH::$PATH"
-        
+          echo "/home/runner/.local/bin" >> $GITHUB_PATH
+
           # install jq
-          wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64          
+          wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo mv jq-linux64 /usr/local/bin/jq
           sudo chmod +x /usr/local/bin/jq
-          
+
           # install helm
           HELM_VERSION=v2.16.9
           wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
           tar -xvf helm-${HELM_VERSION}-linux-amd64.tar.gz
           sudo mv linux-amd64/helm /usr/local/bin/helm-${HELM_VERSION}
           rm -f /helm-${HELM_VERSION}-linux-amd64.tar.gz
-        
+
+      - name: package chart
+        run: |
           # update chart version in Chart.yaml
           CHART_VERSION="${{ github.ref }}"
           CHART_VERSION=$(echo "${CHART_VERSION##*v}")
-          echo "::set-env name=CHART_VERSION::$CHART_VERSION"
+          echo "CHART_VERSION=$CHART_VERSION" >> $GITHUB_ENV
           pushd pgbouncer
           cat Chart.yaml | yq -y --arg VERSION "$CHART_VERSION" '.version = $VERSION' > Chart.yaml.tmp
           mv Chart.yaml.tmp Chart.yaml
           popd
-                  
+
           # package the chart
           helm package pgbouncer
 
@@ -78,6 +79,9 @@ jobs:
           cat index.yaml | yq -y --arg now "$NOW" --arg digest "$SHA" '.entries.pgbouncer += [{"apiVersion":"v1", "created": $now, "description":"pgbouncer", "digest":$digest, "urls":["https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/v${{ env.CHART_VERSION }}/pgbouncer-${{ env.CHART_VERSION }}.tgz"], "version": "${{ env.CHART_VERSION }}"}]' > index.yaml.tmp
           mv index.yaml.tmp index.yaml
           popd
+
+          # update the README
+          sed -i "s/version: [[:digit:]].[[:digit:]].[[:digit:]]/version: ${{ env.CHART_VERSION }}/" README.md
 
           # push index.yaml and Chart.yaml for this release; these commits will trail the "tag".
           git config --global user.name 'github actions'
