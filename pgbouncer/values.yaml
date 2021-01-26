@@ -1,6 +1,7 @@
 # Deployment values for pgbouncer
 replicaCount: 1
 internalPort: 5432
+servicePort: 5432
 antiAffinity: soft
 nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
