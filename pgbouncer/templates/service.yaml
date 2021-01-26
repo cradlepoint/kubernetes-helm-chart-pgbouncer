@@ -17,7 +17,7 @@ spec:
   selector:
     {{ template "pgbouncer.appLabel" . }}
   ports:
-    - port: 5432
+    - port: {{ .Values.servicePort }}
       targetPort: {{ .Values.internalPort }}
       protocol: TCP
       name: postgres
