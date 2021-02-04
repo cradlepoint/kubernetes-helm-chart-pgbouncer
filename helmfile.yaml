@@ -1,0 +1,13 @@
+releases:
+  - name: pgbouncer
+    namespace: default
+    chart: ./pgbouncer
+    values:
+    - users:
+        pgbouncer: md5bc3eb42ff2e374313252d5f9b8a023fa
+      databases:
+        postgres:
+          host: postgresql
+          port: 5432
+          dbname: postgres
+          auth_user: pgbouncer

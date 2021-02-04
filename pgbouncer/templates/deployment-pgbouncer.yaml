@@ -1,15 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "pgbouncer.fullname" . }}
+  name: {{ include "pgbouncer.fullname" . }}
   labels:
-    {{ template "pgbouncer.appLabel" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-    {{- if .Values.labels }}
-    {{- toYaml .Values.labels | nindent 4}}
-    {{- end }}
+    {{- include "pgbouncer.labels" . | nindent 4 }}
 spec:
   strategy:
     rollingUpdate:
@@ -17,16 +11,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "pgbouncer.fullname" . }}
-      release: {{ .Release.Name }}
+      {{- include "pgbouncer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ template "pgbouncer.fullname" . }}
-        release: {{ .Release.Name }}
-        {{- if .Values.spec.labels }}
-        {{- toYaml .Values.spec.labels | nindent 8 }}
-        {{- end }}
+        {{- include "pgbouncer.labels" . | nindent 8 }}
       annotations:
         checksum/ini: {{ include "pgbouncer.ini.1.0.0" . | sha256sum }}
         checksum/users: {{ include "userlist.txt.1.0.0" . | sha256sum }}
@@ -42,8 +31,7 @@ spec:
             - topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  {{ template "pgbouncer.appLabel" . }}
-                  release: {{ .Release.Name }}
+                  {{- include "pgbouncer.selectorLabels" . | nindent 18 }}
         {{- else if eq .Values.antiAffinity "soft" }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -52,17 +40,12 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 labelSelector:
                   matchLabels:
-                    {{ template "pgbouncer.appLabel" . }}
-                    release: {{ .Release.Name }}
+                    {{- include "pgbouncer.selectorLabels" . | nindent 20 }}
         {{- end }}
         {{- if .Values.nodeAffinity }}
         nodeAffinity:
           {{- toYaml .Values.nodeAffinity | nindent 10 }}
         {{- end }}
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
-      {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}
@@ -74,7 +57,7 @@ spec:
       volumes:
         - name: secret
           secret:
-            secretName: {{ template "pgbouncer.fullname" . }}-secret
+            secretName: {{ include "pgbouncer.fullname" . }}-secret
       containers:
         - name: pgbouncer
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
