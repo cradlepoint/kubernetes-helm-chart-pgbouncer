@@ -19,6 +19,8 @@ image:
   tag: 1.0.1
   pullPolicy: Always
 
+imagePullSecrets: []
+
 databases: {}
 #  name:
 #    host: host
