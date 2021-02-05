@@ -1,4 +1,8 @@
 ## helm
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+
 releases:
   - name: pgbouncer
     namespace: default
@@ -12,3 +16,12 @@ releases:
           port: 5432
           dbname: postgres
           auth_user: pgbouncer
+
+  - name: postgresql
+    namespace: default
+    chart: bitnami/postgresql
+    values:
+      - resources:
+          requests:
+            cpu: "1000m"
+            memory: "1Gi"
