@@ -14,7 +14,7 @@ spec:
   selector:
     {{- include "pgbouncer.selectorLabels" . | nindent 6 }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.servicePort }}
       targetPort: {{ .Values.internalPort }}
       protocol: TCP
       name: postgres

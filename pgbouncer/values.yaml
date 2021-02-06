@@ -2,11 +2,10 @@
 # Deployment values for pgbouncer
 replicaCount: 1
 internalPort: 5432
+servicePort: 5432
 antiAffinity: soft
-# optionally define nodeAffinity
-nodeAffinity: {}
-# optionally define tolerations
-tolerations: []
+nodeAffinity: {} # optionally define nodeAffinity
+tolerations: [] # optionally define tolerations
 
 poolMode: session
 
@@ -89,7 +88,6 @@ service:
   enabled: true
   type: ClusterIP
   name: ""
-  port: 5432
   annotations: {}
 
 global:
