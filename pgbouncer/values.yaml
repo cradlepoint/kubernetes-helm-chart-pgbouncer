@@ -60,7 +60,6 @@ connectionLimits:
   reservePoolTimeout: 5
 
 spec:
-  # Add custom pod labels here
   labels: {}
   annotations:
     {}
