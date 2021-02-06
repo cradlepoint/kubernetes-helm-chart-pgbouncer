@@ -5,11 +5,11 @@ repositories:
 
 releases:
   - name: pgbouncer
-    namespace: default
     chart: ../pgbouncer
     values:
     - users:
-        pgbouncer: md5bc3eb42ff2e374313252d5f9b8a023fa
+        # <username>: <passwd> , get password from db using this query SELECT passwd  FROM pg_shadow WHERE usename = '<username>';
+        pgbouncer: "put user password here"
       databases:
         postgres:
           host: postgresql
@@ -18,7 +18,6 @@ releases:
           auth_user: pgbouncer
 
   - name: postgresql
-    namespace: default
     chart: bitnami/postgresql
     values:
       - resources:
