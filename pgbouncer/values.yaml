@@ -36,7 +36,7 @@ users: {}
 
 # Custom pgbouncer.ini
 settings:
-  auth_type: md5
+  auth_type: plain
   #  use when you need need to get md5 password hashes for database users, for more information please check https://www.2ndquadrant.com/en/blog/pg-phriday-securing-pgbouncer/
 
   #  CREATE SCHEMA pgbouncer AUTHORIZATION pgbouncer;
