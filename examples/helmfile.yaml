@@ -9,7 +9,9 @@ releases:
     values:
     - users:
         # <username>: <passwd> , get password from db using this query SELECT passwd  FROM pg_shadow WHERE usename = '<username>';
-        pgbouncer: "setme"
+        pgbouncer: setme
+      settings:
+        auth_type: md5
       databases:
         postgres:
           host: postgresql
