@@ -6,6 +6,7 @@ servicePort: 5432
 antiAffinity: soft
 nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
+nodeSelector: {} # optionally define nodeSelector
 
 poolMode: session
 
