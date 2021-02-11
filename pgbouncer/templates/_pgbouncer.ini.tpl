@@ -8,9 +8,9 @@
 
 {{- $requiredMsg := printf ".Values.databases.%v needs to include .dbname" $k }}
 {{- if $root.Values.global.namespacedDatabases }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $v.dbname }}
 {{- else }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} dbname={{ required $requiredMsg $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} dbname={{ required $requiredMsg $v.dbname }}
 {{- end }}
 
 {{- end }}
@@ -46,11 +46,14 @@ unix_socket_dir = var/run/postgresql
 
 ;;; Authentication settings
 
-auth_type = plain
+auth_type = {{ .Values.settings.auth_type }}
 ;auth_file = /8.0/main/global/pg_auth
 auth_file = /etc/pgbouncer/userlist.txt
 ;auth_hba_file =
-;auth_query = SELECT usename, passwd FROM pg_shadow WHERE usename=$1
+
+{{- with .Values.settings.auth_query }}
+auth_query = {{ . }}
+{{- end }}
 
 ;;; Users allowed into database 'pgbouncer'
 {{- $users := (join ", " (keys .Values.users | sortAlpha)) }}
