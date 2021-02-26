@@ -62,13 +62,13 @@ stats_users = {{ $users }}, stats, root, monitor
 
 ;;; Pooler personality
 
-pool_mode = {{ .Values.poolMode }}
-server_reset_query = DISCARD ALL
-;server_reset_query_always = 0
-;ignore_startup_parameters = extra_float_digits
-;server_check_query = select 1
-;server_check_delay = 30
-;application_name_add_host = 0
+pool_mode = {{ .Values.poolerPersonality.poolMode | default "session" }}
+server_reset_query = {{ .Values.poolerPersonality.serverResetQuery | default "DISCARD ALL" }}
+server_reset_query_always = {{ .Values.poolerPersonality.serverResetQueryAlways | default 0 }}
+ignore_startup_parameters = {{ .Values.poolerPersonality.ignoreStartupParameters | default "" }} 
+server_check_query = {{ .Values.poolerPersonality.serverCheckQuery | default "SELECT 1;" }}
+server_check_delay = {{ .Values.poolerPersonality.serverCheckDelay | default 30 }}
+application_name_add_host = {{ .Values.poolerPersonality.applicationNameAddHost | default 0 }}
 
 ;;; Connection limits
 
@@ -77,8 +77,8 @@ default_pool_size = {{ .Values.connectionLimits.defaultPoolSize }}
 min_pool_size = {{ .Values.connectionLimits.minPoolSize }}
 reserve_pool_size = {{ .Values.connectionLimits.reservePoolSize }}
 reserve_pool_timeout = {{ .Values.connectionLimits.reservePoolTimeout }}
-;max_db_connections = 0
-;max_user_connections = 0
+max_db_connections = {{ .Values.connectionLimits.maxDbConnections | default 0 }}
+max_user_connections = {{ .Values.connectionLimits.maxUserConnections | default 0 }}
 ;server_round_robin = 0
 ;syslog = 0
 ;syslog_facility = daemon

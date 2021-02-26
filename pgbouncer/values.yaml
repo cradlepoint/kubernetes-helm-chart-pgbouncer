@@ -8,7 +8,14 @@ nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
 nodeSelector: {} # optionally define nodeSelector
 
-poolMode: session
+poolerPersonality:
+  poolMode: session
+  # serverResetQuery: "DISCARD ALL"
+  # serverResetQueryAlways: 0
+  # ignoreStartupParameters: ""
+  # serverCheckQuery: "SELECT 1;"
+  # serverCheckDelay: 30
+  # applicationNameAddHost: 0
 
 budget:
   # PodDisruptionBudget spec.minAvailable
@@ -51,7 +58,7 @@ settings:
   #  WHERE usename = p_usename;
   #  END;
   #  $$ LANGUAGE plpgsql SECURITY DEFINER;
-  auth_query: SELECT * FROM pgbouncer.get_auth($1) 
+  auth_query: SELECT * FROM pgbouncer.get_auth($1)
 
 connectionLimits:
   maxClientConn: 200
@@ -59,6 +66,8 @@ connectionLimits:
   minPoolSize: 15
   reservePoolSize: 25
   reservePoolTimeout: 5
+  # maxDbConnections: 0  # zero means unlimited
+  # maxUserConnections: 0 # zero means unlimited
 
 spec:
   labels: {}
