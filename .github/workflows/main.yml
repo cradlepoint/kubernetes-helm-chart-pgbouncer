@@ -76,7 +76,7 @@ jobs:
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           SHA=$(sha256sum pgbouncer-${{ env.CHART_VERSION }}.tgz | head -n1 | cut -d " " -f1)
           pushd repos/stable
-          cat index.yaml | yq -y --arg now "$NOW" --arg digest "$SHA" '.entries.pgbouncer += [{"apiVersion":"v1", "created": $now, "description":"pgbouncer", "digest":$digest, "urls":["https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/v${{ env.CHART_VERSION }}/pgbouncer-${{ env.CHART_VERSION }}.tgz"], "version": "${{ env.CHART_VERSION }}"}]' > index.yaml.tmp
+          cat index.yaml | yq -y --arg now "$NOW" --arg digest "$SHA" '.entries.pgbouncer += [{"apiVersion":"v1", "created": $now, "description":"pgbouncer", "digest":$digest, "name":"pgbouncer", "urls":["https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/v${{ env.CHART_VERSION }}/pgbouncer-${{ env.CHART_VERSION }}.tgz"], "version": "${{ env.CHART_VERSION }}"}]' > index.yaml.tmp
           mv index.yaml.tmp index.yaml
           popd
 
