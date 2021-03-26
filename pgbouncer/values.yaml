@@ -8,12 +8,13 @@ nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
 nodeSelector: {} # optionally define nodeSelector
 
+# poolMode: session # please use poolerPersonality.poolMode
 poolerPersonality:
   poolMode: session
   # serverResetQuery: "DISCARD ALL"
   # serverResetQueryAlways: 0
   # ignoreStartupParameters: ""
-  # serverCheckQuery: "SELECT 1;"
+  # serverCheckQuery: "select 1"
   # serverCheckDelay: 30
   # applicationNameAddHost: 0
 
@@ -35,7 +36,6 @@ databases: {}
 #    user: user
 #    dbname: dbname
 #    auth_user: pgbouncer
-
 
 # list of users to connect to database, You can get by running this query
 # psql -Atq -U postgres -d postgres -c "SELECT concat('\"', usename, '\" \"', passwd, '\"') FROM pg_shadow"

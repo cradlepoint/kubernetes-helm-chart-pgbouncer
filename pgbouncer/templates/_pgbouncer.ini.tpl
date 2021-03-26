@@ -62,7 +62,7 @@ stats_users = {{ $users }}, stats, root, monitor
 
 ;;; Pooler personality
 
-pool_mode = {{ .Values.poolerPersonality.poolMode | default "session" }}
+pool_mode = {{ .Values.poolMode | default .Values.poolerPersonality.poolMode | default "session" }}
 server_reset_query = {{ .Values.poolerPersonality.serverResetQuery | default "DISCARD ALL" }}
 server_reset_query_always = {{ .Values.poolerPersonality.serverResetQueryAlways | default 0 }}
 ignore_startup_parameters = {{ .Values.poolerPersonality.ignoreStartupParameters | default "" }} 
