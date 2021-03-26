@@ -66,7 +66,7 @@ pool_mode = {{ .Values.poolMode | default .Values.poolerPersonality.poolMode | d
 server_reset_query = {{ .Values.poolerPersonality.serverResetQuery | default "DISCARD ALL" }}
 server_reset_query_always = {{ .Values.poolerPersonality.serverResetQueryAlways | default 0 }}
 ignore_startup_parameters = {{ .Values.poolerPersonality.ignoreStartupParameters | default "" }} 
-server_check_query = {{ .Values.poolerPersonality.serverCheckQuery | default "SELECT 1;" }}
+server_check_query = {{ .Values.poolerPersonality.serverCheckQuery | default "select 1" }}
 server_check_delay = {{ .Values.poolerPersonality.serverCheckDelay | default 30 }}
 application_name_add_host = {{ .Values.poolerPersonality.applicationNameAddHost | default 0 }}
 
