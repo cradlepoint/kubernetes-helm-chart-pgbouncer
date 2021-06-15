@@ -79,6 +79,14 @@ logStats: 0
 logPoolerErrors: 1
 verbose: 0
 statsPeriod: 60
+serverLifetime: 3600
+serverIdleTimeout: 600
+serverConnectTimeout: 15
+serverLoginRetry: 15
+queryTimeout: 0
+queryWaitTimeout: 120
+clientIdleTimout: 0
+clientLoginTimeout: 60
 
 # add key: value map entries to customSettings to be added to pbgouncer.ini [pgbouncer] section
 customSettings: {}
