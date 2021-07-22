@@ -62,6 +62,11 @@ spec:
         - name: secret
           secret:
             secretName: {{ include "pgbouncer.fullname" . }}-secret
+        {{- if .Values.tlsSecret.enabled}}
+        - name: tls-secret
+          secret:
+            secretName: {{ .Values.tlsSecret.tlsSecretName}}
+        {{- end}}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -90,6 +95,9 @@ spec:
               subPath: pgbouncer.ini
               mountPath: /etc/pgbouncer/pgbouncer.ini
               readOnly: true
+            {{- if .Values.tlsSecret.enabled }}
+            - name: tls-secret
+              mountPath: /etc/pgbouncer/tls
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-

@@ -101,3 +101,9 @@ service:
 global:
   # optionally use namespace as dbname
   namespacedDatabases: false
+
+# optional secrets for mounting TLS certificates and key
+tlsSecret:
+  enabled: false
+  # the name of the secret storing the certificates and key
+  tlsSecretName: ""
