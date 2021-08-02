@@ -35,6 +35,15 @@ databases: {}
 users: {}
 #  username: password
 
+# the name of an existing secret containg your user list
+# data format is:
+#     "username1" "password"
+#     "username2" "other-password"
+# existingUsersSecret: myuserlist-secret
+
+# the key containing the secret
+# existingUsersSecretKey: userlist.txt
+
 # Custom pgbouncer.ini
 settings:
   auth_type: plain
