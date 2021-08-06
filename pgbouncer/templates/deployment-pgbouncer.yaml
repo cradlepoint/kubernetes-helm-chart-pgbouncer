@@ -79,6 +79,9 @@ spec:
           readinessProbe:
             tcpSocket:
               port: {{ .Values.internalPort }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.internalPort }}
           lifecycle:
             preStop:
               exec:
