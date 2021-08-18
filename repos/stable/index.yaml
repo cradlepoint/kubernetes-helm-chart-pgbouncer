@@ -65,4 +65,12 @@ entries:
       urls:
         - https://github.com/Pluggi/kubernetes-helm-chart-pgbouncer/releases/download/v2.0.2/pgbouncer-2.0.2.tgz
       version: 2.0.2
+    - apiVersion: v1
+      created: '2021-08-18T15:44:23Z'
+      description: pgbouncer
+      digest: 33e3817d466c43a1daef0a972fcb62c2e1421c41f1cdd5136f0a7466f3a28be9
+      name: pgbouncer
+      urls:
+        - https://github.com/Pluggi/kubernetes-helm-chart-pgbouncer/releases/download/v2.0.3/pgbouncer-2.0.3.tgz
+      version: 2.0.3
 generated: '2020-07-31T09:58:17.91897671-06:00'
