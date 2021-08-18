@@ -19,7 +19,7 @@ spec:
       protocol: TCP
       name: postgres
     - port: 6432
-      targetPort: 6432
+      targetPort: admin
       protocol: TCP
-      name: postgres
+      name: admin
 {{- end }}

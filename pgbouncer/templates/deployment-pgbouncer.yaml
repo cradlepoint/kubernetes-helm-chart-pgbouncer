@@ -76,6 +76,8 @@ spec:
           ports:
             - name: pgbouncer
               containerPort: {{ .Values.internalPort }}
+            - name: admin
+              containerPort: 6432
           readinessProbe:
             tcpSocket:
               port: {{ .Values.internalPort }}
