@@ -3,4 +3,4 @@ appVersion: '1.0'
 description: PgBouncer chart
 home: https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer
 name: pgbouncer
-version: 2.0.4
+version: 2.0.5
