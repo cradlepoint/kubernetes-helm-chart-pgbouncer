@@ -18,4 +18,8 @@ spec:
       targetPort: {{ .Values.internalPort }}
       protocol: TCP
       name: postgres
+    - port: 6432
+      targetPort: 6432
+      protocol: TCP
+      name: postgres
 {{- end }}
