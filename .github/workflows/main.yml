@@ -1,5 +1,7 @@
 # maintainers:  to run this "package" action:
+# enable actions
 # git tag v1.0.X && git push origin --tags
+# disable actions
 
 name: package
 
@@ -26,11 +28,11 @@ jobs:
           sudo chmod +x /usr/local/bin/jq
 
           # install helm
-          HELM_VERSION=v2.16.9
-          wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
-          tar -xvf helm-${HELM_VERSION}-linux-amd64.tar.gz
-          sudo mv linux-amd64/helm /usr/local/bin/helm-${HELM_VERSION}
-          rm -f /helm-${HELM_VERSION}-linux-amd64.tar.gz
+          HELM3_VERSION=v3.6.3
+          wget https://get.helm.sh/helm-${HELM3_VERSION}-linux-amd64.tar.gz
+          tar -xvf helm-${HELM3_VERSION}-linux-amd64.tar.gz
+          sudo mv linux-amd64/helm /usr/local/bin/helm
+          rm helm-${HELM3_VERSION}-linux-amd64.tar.gz
 
       - name: package chart
         run: |
