@@ -42,3 +42,25 @@ Selector labels
 app.kubernetes.io/name: {{ include "pgbouncer.fullname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Get the users secret name.
+*/}}
+{{- define "pgbouncer.usersSecretName" -}}
+{{- if .Values.existingUsersSecret -}}
+{{- printf "%s" .Values.existingUsersSecret -}}
+{{- else -}}
+{{- printf "%s-secret-userlist-txt" (include "pgbouncer.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the users key to be retrieved from pgbouncer secret.
+*/}}
+{{- define "pgbouncer.usersSecretKey" -}}
+{{- if .Values.existingUsersSecretKey -}}
+{{- printf "%s" .Values.existingUsersSecretKey -}}
+{{- else -}}
+{{- printf "userlist.txt" -}}
+{{- end -}}
+{{- end -}}

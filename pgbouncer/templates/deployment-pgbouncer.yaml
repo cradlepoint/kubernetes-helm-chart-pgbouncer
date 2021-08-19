@@ -59,9 +59,12 @@ spec:
         - name: {{ .Values.imagePullSecretName }}
       {{- end }}
       volumes:
-        - name: secret
+        - name: userssecret
           secret:
-            secretName: {{ include "pgbouncer.fullname" . }}-secret
+            secretName: {{ template "pgbouncer.usersSecretName" . }}
+        - name: config
+          configMap:
+            name: {{ template "pgbouncer.fullname" . }}-config
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -85,11 +88,11 @@ spec:
                 # https://freecontent.manning.com/handling-client-requests-properly-with-kubernetes/
                 command: ["/bin/sh","-c","sleep 5"]
           volumeMounts:
-            - name: secret
-              subPath: userlist.txt
+            - name: userssecret
+              subPath: {{ template "pgbouncer.usersSecretKey" . }}
               mountPath: /etc/pgbouncer/userlist.txt
               readOnly: true
-            - name: secret
+            - name: config
               subPath: pgbouncer.ini
               mountPath: /etc/pgbouncer/pgbouncer.ini
               readOnly: true
