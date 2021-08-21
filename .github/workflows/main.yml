@@ -8,7 +8,7 @@ name: package
 on:
   push:
     tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0.0, v20.15.10
+      - 'v*' # Push events to matching v*, i.e. v1.0.0, v20.15.10
 jobs:
   build:
     name: package helm chart release
@@ -16,9 +16,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          ref: 'master'
       - name: install dependencies
         run: |
-          # install yq 
+          # install yq
           pip install yq
           echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
@@ -32,6 +34,7 @@ jobs:
           wget https://get.helm.sh/helm-${HELM3_VERSION}-linux-amd64.tar.gz
           tar -xvf helm-${HELM3_VERSION}-linux-amd64.tar.gz
           sudo mv linux-amd64/helm /usr/local/bin/helm
+          rm -rf linux-amd64
           rm helm-${HELM3_VERSION}-linux-amd64.tar.gz
 
       - name: package chart
@@ -64,7 +67,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing its ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./pgbouncer-${{ env.CHART_VERSION }}.tgz
           asset_name: pgbouncer-${{ env.CHART_VERSION }}.tgz
           asset_content_type: application/gzip
@@ -83,11 +86,15 @@ jobs:
           popd
 
           # update the README
-          sed -i "s/version: [[:digit:]].[[:digit:]].[[:digit:]]/version: ${{ env.CHART_VERSION }}/" README.md
+          sed -i "s/version: [0-9.]\+/version: ${{ env.CHART_VERSION }}/" README.md
 
-          # push index.yaml and Chart.yaml for this release; these commits will trail the "tag".
-          git config --global user.name 'github actions'
-          git config --global user.email 'github-actions@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git commit -am "update helm index for release ${{ env.CHART_VERSION }}"
-          git push origin HEAD:master
+
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "update helm index and README for release ${{ env.CHART_VERSION }}"
+          commit-message: "update helm index and README for release ${{ env.CHART_VERSION }}"
+          branch: create-pull-request/${{ env.CHART_VERSION }}
+          delete-branch: true
