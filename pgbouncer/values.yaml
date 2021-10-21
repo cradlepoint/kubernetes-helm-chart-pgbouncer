@@ -8,7 +8,15 @@ nodeAffinity: {} # optionally define nodeAffinity
 tolerations: [] # optionally define tolerations
 nodeSelector: {} # optionally define nodeSelector
 
-poolMode: session
+# poolMode: session # please use poolerPersonality.poolMode
+poolerPersonality:
+  poolMode: session
+  # serverResetQuery: "DISCARD ALL"
+  # serverResetQueryAlways: 0
+  # ignoreStartupParameters: ""
+  # serverCheckQuery: "select 1"
+  # serverCheckDelay: 30
+  # applicationNameAddHost: 0
 
 budget:
   # PodDisruptionBudget spec.minAvailable
@@ -28,7 +36,6 @@ databases: {}
 #    user: user
 #    dbname: dbname
 #    auth_user: pgbouncer
-
 
 # list of users to connect to database, You can get by running this query
 # psql -Atq -U postgres -d postgres -c "SELECT concat('\"', usename, '\" \"', passwd, '\"') FROM pg_shadow"
@@ -60,7 +67,7 @@ settings:
   #  WHERE usename = p_usename;
   #  END;
   #  $$ LANGUAGE plpgsql SECURITY DEFINER;
-  auth_query: SELECT * FROM pgbouncer.get_auth($1) 
+  auth_query: SELECT * FROM pgbouncer.get_auth($1)
 
 connectionLimits:
   maxClientConn: 200
@@ -68,6 +75,8 @@ connectionLimits:
   minPoolSize: 15
   reservePoolSize: 25
   reservePoolTimeout: 5
+  # maxDbConnections: 0  # zero means unlimited
+  # maxUserConnections: 0 # zero means unlimited
 
 spec:
   labels: {}
