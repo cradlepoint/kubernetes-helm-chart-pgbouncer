@@ -16,7 +16,7 @@ budget:
 
 image:
   repository: cradlepoint/pgbouncer
-  tag: 1.0.1
+  tag: latest 
   pullPolicy: Always
 
 imagePullSecrets: []
