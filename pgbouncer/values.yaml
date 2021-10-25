@@ -65,12 +65,10 @@ settings:
   #
   # after doing the above, override/enable auth_query as follows
   # ======================================+++++++===============
-  # auth_query_commented: false
-  # auth_query: "SELECT * FROM pgbouncer.get_auth($1)"
+  # auth_query: "auth_query = SELECT * FROM pgbouncer.get_auth($1)"
 
   # by default auth_query is commented in pgbouncer.ini
-  auth_query_commented: true
-  auth_query: "SELECT usename, passwd FROM pg_shadow WHERE usename=$1"
+  auth_query: ";auth_query = SELECT usename, passwd FROM pg_shadow WHERE usename=$1"
 
 connectionLimits:
   maxClientConn: 200

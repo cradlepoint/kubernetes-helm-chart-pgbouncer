@@ -51,11 +51,7 @@ auth_type = {{ .Values.settings.auth_type }}
 auth_file = /etc/pgbouncer.d/userlist.txt
 ;auth_hba_file =
 
-{{ $authQueryLineStart := "" }}
-{{- if .Values.settings.auth_query_commented }}
-  {{- $authQueryLineStart = ";" }}
-{{- end }}
-{{- printf "%sauth_query = %s" $authQueryLineStart .Values.settings.auth_query }}
+{{ .Values.settings.auth_query }}
 
 ;;; Users allowed into database 'pgbouncer'
 {{- $users := (join ", " (keys .Values.users | sortAlpha)) }}
