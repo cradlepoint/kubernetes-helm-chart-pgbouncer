@@ -41,6 +41,7 @@ Selector labels
 {{- define "pgbouncer.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "pgbouncer.fullname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app: {{ include "pgbouncer.fullname" . }}
 {{- end }}
 
 {{/*
