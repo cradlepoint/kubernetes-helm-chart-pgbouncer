@@ -49,6 +49,8 @@ settings:
   auth_type: plain
   #  use when you need need to get md5 password hashes for database users, for more information please check https://www.2ndquadrant.com/en/blog/pg-phriday-securing-pgbouncer/
 
+  # following is an example of db setup
+  # ===================================
   #  CREATE SCHEMA pgbouncer AUTHORIZATION pgbouncer;
   #  CREATE OR REPLACE FUNCTION pgbouncer.get_auth(p_usename TEXT)
   #  RETURNS TABLE(username TEXT, password TEXT) AS
@@ -60,7 +62,10 @@ settings:
   #  WHERE usename = p_usename;
   #  END;
   #  $$ LANGUAGE plpgsql SECURITY DEFINER;
-  auth_query: SELECT * FROM pgbouncer.get_auth($1) 
+  #
+  # after doing the above, override/enable auth_query as follows
+  # ======================================+++++++===============
+  auth_query: "auth_query = SELECT * FROM pgbouncer.get_auth($1)"
 
 connectionLimits:
   maxClientConn: 200

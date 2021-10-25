@@ -51,9 +51,7 @@ auth_type = {{ .Values.settings.auth_type }}
 auth_file = /etc/pgbouncer.d/userlist.txt
 ;auth_hba_file =
 
-{{- with .Values.settings.auth_query }}
-auth_query = {{ . }}
-{{- end }}
+{{ .Values.settings.auth_query }}
 
 ;;; Users allowed into database 'pgbouncer'
 {{- $users := (join ", " (keys .Values.users | sortAlpha)) }}
@@ -101,7 +99,7 @@ verbose = {{ .Values.verbose }}
 ;server_login_retry = {{ .Values.serverLoginRetry}}
 ;query_timeout = {{ .Values.queryTimeout}}
 ;query_wait_timeout = {{ .Values.queryWaitTimeout}}
-;client_idle_timeout = { .Values.clientIdleTimeout}
+;client_idle_timeout = {{ .Values.clientIdleTimeout}}
 ;client_login_timeout = {{ .Values.clientLoginTimeout}}
 ;autodb_idle_timeout = 3600
 ;suspend_timeout = 10
