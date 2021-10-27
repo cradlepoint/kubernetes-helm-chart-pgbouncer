@@ -29,7 +29,7 @@ Common labels
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ include "pgbouncer.chart" . }}
 {{- if .Values.labels }}
-{{- toYaml .Values.labels }}
+{{ toYaml .Values.labels }}
 {{- end }}
 {{ include "pgbouncer.selectorLabels" . }}
 {{- end }}
