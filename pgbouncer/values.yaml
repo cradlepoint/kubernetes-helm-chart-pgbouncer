@@ -87,6 +87,10 @@ spec:
 # Add custom deployment labels here
 labels: {}
 
+# Whether to use helm2-style selectors.  Note pgbouncer version <= v1.0.10 defined the Deployment spec.template.matchLabels:{} this way,
+# so define this to true to upgrade an existing pgbouncer deployment of versions <= v1.0.10.
+helm2selector: false
+
 logConnections: 0
 logDisconnections: 0
 logStats: 0

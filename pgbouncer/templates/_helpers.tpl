@@ -39,9 +39,13 @@ helm.sh/chart: {{ include "pgbouncer.chart" . }}
 Selector labels
 */}}
 {{- define "pgbouncer.selectorLabels" -}}
+{{- if .Values.helm2selector }}
+app: {{ include "pgbouncer.fullname" . }}
+release: {{ .Release.Name }}
+{{- else }}
 app.kubernetes.io/name: {{ include "pgbouncer.fullname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: {{ include "pgbouncer.fullname" . }}
+{{- end }}
 {{- end }}
 
 {{/*
