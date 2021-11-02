@@ -65,4 +65,12 @@ entries:
       urls:
         - https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/v1.0.15/pgbouncer-1.0.15.tgz
       version: 1.0.15
+    - apiVersion: v1
+      created: '2021-11-02T16:40:18Z'
+      description: pgbouncer
+      digest: 098b3b4731c0d42db9c2d7ddb3f97db0169e1d425f71ab421ea8b92be9abe480
+      name: pgbouncer
+      urls:
+        - https://github.com/cradlepoint/kubernetes-helm-chart-pgbouncer/releases/download/v1.0.15/pgbouncer-1.0.15.tgz
+      version: 1.0.15
 generated: '2020-07-31T09:58:17.91897671-06:00'
