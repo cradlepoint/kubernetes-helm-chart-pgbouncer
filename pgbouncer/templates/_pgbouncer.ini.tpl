@@ -93,14 +93,14 @@ verbose = {{ .Values.verbose }}
 
 ;;; Timeouts
 
-;server_lifetime = {{ .Values.serverLifetime}}
-;server_idle_timeout = {{ .Values.serverIdleTimeout}}
-;server_connect_timeout = {{ .Values.serverConnectTimeout}}
-;server_login_retry = {{ .Values.serverLoginRetry}}
-;query_timeout = {{ .Values.queryTimeout}}
-;query_wait_timeout = {{ .Values.queryWaitTimeout}}
-;client_idle_timeout = {{ .Values.clientIdleTimeout}}
-;client_login_timeout = {{ .Values.clientLoginTimeout}}
+server_lifetime = {{ .Values.serverLifetime }}
+server_idle_timeout = {{ .Values.serverIdleTimeout }}
+server_connect_timeout = {{ .Values.serverConnectTimeout }}
+server_login_retry = {{ .Values.serverLoginRetry }}
+query_timeout = {{ .Values.queryTimeout }}
+query_wait_timeout = {{ .Values.queryWaitTimeout }}
+client_idle_timeout = {{ .Values.clientIdleTimeout }}
+client_login_timeout = {{ .Values.clientLoginTimeout }}
 ;autodb_idle_timeout = 3600
 ;suspend_timeout = 10
 ;idle_transaction_timeout = 0
