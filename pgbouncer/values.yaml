@@ -103,7 +103,7 @@ serverConnectTimeout: 15
 serverLoginRetry: 15
 queryTimeout: 0
 queryWaitTimeout: 120
-clientIdleTimout: 0
+clientIdleTimeout: 0
 clientLoginTimeout: 60
 
 # add key: value map entries to customSettings to be added to pbgouncer.ini [pgbouncer] section
