@@ -23,6 +23,7 @@ imagePullSecrets: []
 
 databases: {}
 #  name:
+#    These values can be any of the keys specified in https://www.pgbouncer.org/config.html#section-users
 #    host: host
 #    port: port
 #    user: user

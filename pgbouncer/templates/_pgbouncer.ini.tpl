@@ -4,17 +4,16 @@
 
 ;; database name = {{ .Values.replicaCount }}
 [databases]
-{{- range $k, $v := .Values.databases }}
+{{- range $db, $config := .Values.databases }}
 
-{{- $requiredMsg := printf ".Values.databases.%v needs to include .dbname" $k }}
+{{- $requiredMsg := printf ".Values.databases.%v needs to include .dbname" $db }}
 {{- if $root.Values.global.namespacedDatabases }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $v.dbname }}
+{{ $db }} = {{- range $k, $v := $config -}} {{ if ne $k "dbname" }} {{$k}}={{$v}} {{- end }} {{- end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $config.dbname }}
 {{- else }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} {{ if $v.dbname }}dbname={{ $v.dbname }}{{end}}
+{{ $db }} = {{- range $k, $v := $config }} {{$k}}={{$v}} {{- end}}
 {{- end }}
 
 {{- end }}
-
 
 [pgbouncer]
 
